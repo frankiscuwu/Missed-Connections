@@ -82,7 +82,7 @@ def get_users(request):
                                 "interest3": nearby_userprofile.interest3,
                                 "school": nearby_userprofile.school,
                                 "major": nearby_userprofile.major,
-                                "hometown": nearby_userprofile.hometowm
+                                "hometown": nearby_userprofile.hometown
                             })
                         except UserProfile.DoesNotExist:
                             # the user does not have a profile!
