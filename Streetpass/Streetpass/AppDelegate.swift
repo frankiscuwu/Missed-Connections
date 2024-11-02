@@ -19,7 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         // Start monitoring significant location changes
         locationManager?.startMonitoringSignificantLocationChanges()
         
-        // Ensure that the location manager can update location in the background
+        // Allow background location updates
         locationManager?.allowsBackgroundLocationUpdates = true
         
         return true
@@ -29,17 +29,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         switch status {
         case .authorizedWhenInUse, .authorizedAlways:
-            // Start location updates if permission is granted
-            manager.startUpdatingLocation()
+            // No need to start updating location here, significant location changes will be monitored
+            break
         case .denied, .restricted:
-            // Handle the case where the user has denied or restricted location services
             print("Location services are denied or restricted")
         default:
             break
         }
     }
 
-    // CLLocationManagerDelegate method to handle location updates
+    // CLLocationManagerDelegate method to handle location updates from significant location changes
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.last else { return }
         print("Updated location: \(location.coordinate.latitude), \(location.coordinate.longitude)")

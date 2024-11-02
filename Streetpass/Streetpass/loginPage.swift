@@ -3,20 +3,14 @@ import SwiftUI
 struct loginPage: View {
     @State private var username: String = ""
     @State private var password: String = ""
-<<<<<<< HEAD
-    @State private var errorMessage = ""
-=======
     @State private var loginMessage: String = ""
     @State private var navigateToStupid = false  // State variable for navigation
->>>>>>> refs/remotes/origin/main
 
     var body: some View {
         NavigationStack {
             VStack {
-                Image("templogo")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 150, height: 150) // Set the frame size as needed
+                Text("streetpass")
+                    .font(.largeTitle)
                     .padding(.bottom, 40)
 
                 TextField("Username", text: $username)
@@ -40,18 +34,6 @@ struct loginPage: View {
                         .cornerRadius(5.0)
                 }
                 .padding(.bottom, 20)
-<<<<<<< HEAD
-                
-                // Error Message
-                if !errorMessage.isEmpty {
-                    Text(errorMessage)
-                    .foregroundColor(.red)
-                    .padding(.horizontal, 40)
-                }
-                
-                NavigationLink(destination: signupPage()) {
-                    Text("New user? Sign up")
-=======
 
                 NavigationLink("New user? Sign up", destination: signupPage())
                     .padding(.bottom, 20)
@@ -60,7 +42,6 @@ struct loginPage: View {
                     Text(loginMessage)
                         .foregroundColor(loginMessage == "Login successful!" ? .green : .red)
                         .padding()
->>>>>>> refs/remotes/origin/main
                 }
             }
             .padding()
