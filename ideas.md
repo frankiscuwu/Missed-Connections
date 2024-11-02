@@ -1,5 +1,7 @@
 
-# Track
+# Activities 
+
+# Tracks
 Reimagine Reality: 
 Our greatest strength as humans lies in our ability to innovate. As we set our sights on exploring the stars, we must refine existing products and technologies to meet new demands and operational challenges. Today, the world is filled with countless established products and applications. But have you ever wished an app had a feature it lacked? Or thought you could design it better if you were the creator? Now's your chance to unleash the inner creator in you and turn those ideas into reality!
 
@@ -13,7 +15,23 @@ In this track, you can take existing products and applications and transform the
 – How can you make the user experience smoother or more intuitive?
 – What new industries or fields could benefit from this product with some modifications?
 
+Cometcare:
+Space travel can be physically, mentally, and emotionally damaging. Astronauts must train for microgravity or zero-gravity environments, prepare for long missions, and cope with separations from loved ones indefinitely. Thus, prioritizing their wellbeing is essential.
 
+In this track, we challenge you to design a product or application that enhances wellness for astronauts – and anyone else! Whether you focus on fitness, exercise, journaling, or stress management, explore innovative avenues that blend technology and wellness. Create solutions that make healthy living accessible and engaging on Earth and beyond!
+
+– What aspect of overall wellness would you like to focus on? Examples include emotional, physical, financial, social, intellectual, and spiritual wellness, but feel free to be more specific or broad as you see fit!
+– How can you ensure a clean and intuitive user experience that enhances accessibility and dissuades frustration?
+– How can current approaches to wellbeing and wellness be adapted for new environments and new users (like maybe… aliens)?
+– How can we leverage existing technologies to aid communication and combat isolation and loneliness during extended trips?
+–What platforms, tools, games, or activities would most effectively facilitate social interaction, promote community, and reduce feelings of isolation?
+
+
+# WORKING
+# Our idea
+
+
+# OLD
 # Our idea
 A modern Social Streetpass
 
