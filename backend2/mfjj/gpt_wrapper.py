@@ -7,8 +7,10 @@ def call_gpt(content):
     load_dotenv()
     client = OpenAI(api_key=os.getenv("CHAT_KEY"))
 
+    print(content)
+
     prompt = '''You will be given a list of people. The first person in the list is me. Find three other people in the list that most share similar interests to me. Be optimistic. Format each person recomendation in a JSON format. This an an example of an output: ' ,   
-                "Example: [{'person': 'person1', 'reason': 'Reason for person 1'}. Data begins here: '''
+                "Example: [{'person': 'person1', 'reason': 'Reason for person 1'}. In your JSON, dont put ```json, just put {. Similarly, don't use ``` to end, just put a curly bracket ( } ). Also, don't use single quotes, its json you need to use "". The JSON should be wrapped in curly brackets. Data begins here: '''
     chat_completion = client.chat.completions.create(
        messages=[
         {
@@ -21,6 +23,7 @@ def call_gpt(content):
 
 
     generated_string = chat_completion.choices[0].message.content.strip()
+    print(generated_string)
     try:
         json_data = json.loads(generated_string)
         return json_data
