@@ -3,7 +3,6 @@ import SwiftUI
 struct AccountCreationView: View {
     // State variables to store user input
     @State private var username = ""
-    @State private var email = ""
     @State private var password = ""
     @State private var showPassword = false
 
@@ -17,12 +16,6 @@ struct AccountCreationView: View {
             // Username Field
             TextField("Username", text: $username)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding(.horizontal, 40)
-
-            // Email Field
-            TextField("Email", text: $email)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .keyboardType(.emailAddress)
                 .padding(.horizontal, 40)
 
             // Password Field with Show/Hide Toggle
@@ -60,8 +53,36 @@ struct AccountCreationView: View {
 
     // Action for Create Account button
     func createAccount() {
-        // Account creation logic here
-        print("Creating account for \(username)")
+        let newUser = ["username": username, "password": password]
+        guard let jsonData = try? JSONSerialization.data(withJSONObject: newUser, options: []) else {
+            print("Error: Unable to encode user data")
+            return
+        }
+        
+        let url = URL(string: "http://10.239.101.11:5000/signup/")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = jsonData
+        
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                print("Error: \(error)")
+                return
+            }
+            
+            guard let httpResponse = response as? HTTPURLResponse,
+                  (200...299).contains(httpResponse.statusCode) else {
+                print("Error: Invalid response from server")
+                return
+            }
+            
+            if let data = data {
+                print("Response Data: \(String(decoding: data, as: UTF8.self))")
+            }
+        }
+        
+        task.resume()
     }
 }
 
