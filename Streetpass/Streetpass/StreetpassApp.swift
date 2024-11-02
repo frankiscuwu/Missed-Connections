@@ -14,7 +14,7 @@ struct StreetpassApp: App {
     
     var body: some Scene {
         WindowGroup {
-            signupPage()
+            loginPage()
         }
     }
 }
