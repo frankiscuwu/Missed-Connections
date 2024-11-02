@@ -8,7 +8,7 @@ class Location(models.Model):
     longitude = models.FloatField()
     created_at = models.DateTimeField(auto_now_add=True)
     def __start__(self):
-        return f"{self.user_id}: ({self.latitude}, {self.longitude})"
+        return f"{self.user}: ({self.latitude}, {self.longitude})"
 
 class UserProfile(models.Model):
     user_profile = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -22,4 +22,4 @@ class UserProfile(models.Model):
             self.interest2 = self.interest2.lower()
             self.interest3 = self.interest3.lower()
         def __str__(self):
-            return f"{self.user_id.username}'s Profile"
+            return f"{self.user_profile.username}'s Profile"
