@@ -89,6 +89,7 @@ def post_profile(request):
         links = data.get("links")
         school = data.get("school")
         major = data.get("major")
+        hometown = data.get("hometown")
 
         profile, created = UserProfile.objects.update_or_create(
             user_profile=request.user,  # Filter by the current user
@@ -98,7 +99,8 @@ def post_profile(request):
                 'interest3': interest3,
                 'links': links,
                 'school': school,
-                'major': major
+                'major': major,
+                'hometown': hometown
             }
         )
         if created:
