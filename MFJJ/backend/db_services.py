@@ -19,11 +19,10 @@ def init_db():
         connection.commit()
         connection.close()
 
-def add_location_item(request):
+def add_location_item(data):
     # getting the form items sent from client
-    user_id = request.json.get('user_id')
-    latitude = request.json.get('latitude')
-    longitutde = request.json.get('longitude')
+    {user_id, latitude, longitutde} = data
+
 
     # connecting with the database
     connection = sqlite3.connect("locations.db")
