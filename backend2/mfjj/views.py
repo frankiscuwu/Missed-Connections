@@ -30,7 +30,7 @@ def get_users(request):
             return JsonResponse({"error": "Please login"}, status=401)
 
         # max distance is 0.1km
-        MAX_DISTANCE = 10000000
+        MAX_DISTANCE = 0.1
         # get the user
         user_id = request.user.id
 
@@ -57,6 +57,7 @@ def get_users(request):
 
             for location in locations:
                 distance = haversine(user_lat, user_long, location.latitude, location.longitude)
+                print("DISTANCE: ", distance)
                 # Get nearby users only
                 if distance <= MAX_DISTANCE:
                     if location.user.username not in seen_usernames:
