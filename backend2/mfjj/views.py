@@ -7,7 +7,7 @@ from django.utils import timezone
 from datetime import timedelta
 from .haversine import haversine
 from .models import Location, UserProfile
-from gpt_wrapper import call_gpt
+from .gpt_wrapper import call_gpt
 # Create your views here.
 @csrf_exempt
 def post_location(request):
