@@ -3,6 +3,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 import json
+from django.utils import timezone
+from datetime import timedelta
 from .haversine import haversine
 from .models import Location
 # Create your views here.
@@ -28,27 +30,41 @@ def get_users(request):
             return JsonResponse({"error": "Please login"}, status=401)
 
         # max distance is 0.1km
-        MAX_DISTANCE = 0.1
+        MAX_DISTANCE = 10000000
         # get the user
         user_id = request.user.id
+
+        # Calculate the time 24 hours ago from now
+        time_threshold = timezone.now() - timedelta(days=1)
+
+
+        # Get the user's locations from the past 24 hours
         try:
-            user_location = Location.objects.get(user_id=user_id)
+            user_locations = Location.objects.filter(user_id=user_id, created_at__gte=time_threshold)
         except Location.DoesNotExist:
             return JsonResponse({"error": "User not found."}, status=404)
-        
-        user_lat = user_location.latitude
-        user_long = user_location.longitude
 
         nearby_users = []
-        # find all nearby users not inclduing the user itself
-        locations = Location.objects.exclude(user_id=user_id)
-        for location in locations:
-            distance = haversine(user_lat, user_long, location.latitude, location.longitude)
-            # get nearby users only
-            if distance <= MAX_DISTANCE:
-                nearby_users.append({
-                    "user_id": location.user_id
-                })
+        user_lat = user_long = None
+        seen_usernames = set()  # To track added usernames
+
+        for user_location in user_locations:
+            user_lat = user_location.latitude
+            user_long = user_location.longitude
+
+            # Find all nearby users excluding the logged-in user
+            locations = Location.objects.exclude(user_id=user_id).filter(created_at__gte=time_threshold)
+
+            for location in locations:
+                distance = haversine(user_lat, user_long, location.latitude, location.longitude)
+                # Get nearby users only
+                if distance <= MAX_DISTANCE:
+                    if location.user.username not in seen_usernames:
+                        seen_usernames.add(location.user.username)
+                        nearby_users.append({
+                            "username": location.user.username,
+                        })
+
         return JsonResponse(nearby_users, safe=False, status=200)
     return JsonResponse({"error": "Invalid request method."}, status=405)
 
