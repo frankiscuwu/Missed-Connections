@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'mfjj'
 ]
 
 MIDDLEWARE = [
@@ -79,7 +80,7 @@ DATABASES = {
         'NAME': 'railway',
         'USER': 'postgres',
         'PASSWORD': 'LVGZNTsafcfvPASxHgQZbRRMBaXVrKtM',
-        'HOST': 'postgres.railway.internal',
+        'HOST': 'roundhouse.proxy.rlwy.net',
         'PORT': '5432',
     }
 }
