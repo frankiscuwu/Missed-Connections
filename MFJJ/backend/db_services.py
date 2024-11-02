@@ -1,9 +1,17 @@
-from flask import Flask, request, jsonify
-import sqlite3
+import psycopg2
 import os
 import math
 
 def init_db():
+    # Replace these with your actual database credentials
+    connection = psycopg2.connect(
+        dbname="railway",
+        user="postgres",
+        password="LVGZNTsafcfvPASxHgQZbRRMBaXVrKtM",
+        host="postgres.railway.internal",  # for example, "db.example.com"
+        port="5432"  # default PostgreSQL port is 5432
+    )
+
     if not os.path.exists("locations.db"):
         connection = sqlite3.connect("locations.db")
         cursor = connection.cursor()
@@ -22,8 +30,8 @@ def init_db():
 def add_location_item(data):
     # getting the form items sent from client
     user_id = data['user_id']
-    latitude = data['latitude']
-    longitutde = data['longitutde']
+    latitude = data['lat']
+    longitutde = data['long']
 
 
     # connecting with the database
@@ -48,8 +56,8 @@ def haversine(lat1, lon1, lat2, lon2):
 def get_proximate_users(data):
     # A DIFFERENCE OF 0.1km
     MAX_DISTANCE = 0.1
-    user_lat = float(data['latitude'])
-    user_long = float(data['longitutde'])
+    user_lat = float(data['lat'])
+    user_long = float(data['long'])
     # connecting with the database
     connection = sqlite3.connect("locations.db")
     cursor = connection.cursor()
