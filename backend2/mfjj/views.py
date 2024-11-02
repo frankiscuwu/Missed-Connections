@@ -7,6 +7,7 @@ from django.utils import timezone
 from datetime import timedelta
 from .haversine import haversine
 from .models import Location, UserProfile
+from gpt_wrapper import call_gpt
 # Create your views here.
 @csrf_exempt
 def post_location(request):
@@ -88,7 +89,8 @@ def get_users(request):
                             # the user does not have a profile!
                             continue
                         
-            print(nearby_users)
+        gpt_response = call_gpt(nearby_users)
+        print(gpt_response)
         return JsonResponse(nearby_users, safe=False, status=200)
     return JsonResponse({"error": "Invalid request method."}, status=405)
 
