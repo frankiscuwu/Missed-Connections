@@ -1,4 +1,7 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, abort
+from db_services import add_location_item, init_db, get_proximate_users
+
+init_db()
 
 app = Flask(__name__)
 
@@ -10,15 +13,16 @@ def locate():
 
             # debug
             print(data)
+            print(type(data))
 
             # send to backend
-
-            return jsonify(data)
+            add_location_item(data)
+            return jsonify({'users': get_proximate_users(data)})
 
     elif request.method == "GET":
         return 'Hi frank'
     else:
-        return jsonify('{Error}')
+        return abort(404)
 
 
 if __name__ == "__main__":
