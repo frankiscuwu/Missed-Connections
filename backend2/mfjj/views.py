@@ -49,6 +49,17 @@ def get_users(request):
         user_lat = user_long = None
         seen_usernames = set()  # To track added usernames
 
+        # add the current user as the first person in the nearby users array
+        current_userprofile = UserProfile.objects.get(user_profile=request.user)
+        nearby_users.append({
+            "username": request.user.username,
+            "interest1": current_userprofile.interest1,
+            "interest2": current_userprofile.interest2,
+            "interest3": current_userprofile.interest3,
+            "school": current_userprofile.school,
+            "major": current_userprofile.major,
+            "hometown": current_userprofile.hometown
+        })
         for user_location in user_locations:
             user_lat = user_location.latitude
             user_long = user_location.longitude
@@ -71,7 +82,7 @@ def get_users(request):
                                 "interest3": nearby_userprofile.interest3,
                                 "school": nearby_userprofile.school,
                                 "major": nearby_userprofile.major,
-                                "hometown": nearby_userprofile.hometowm
+                                "hometown": nearby_userprofile.hometown
                             })
                         except UserProfile.DoesNotExist:
                             # the user does not have a profile!
@@ -81,6 +92,7 @@ def get_users(request):
         return JsonResponse(nearby_users, safe=False, status=200)
     return JsonResponse({"error": "Invalid request method."}, status=405)
 
+@csrf_exempt
 def post_profile(request):
     if not request.user.is_authenticated:
         return JsonResponse({"error": "Please login"}, status=401)
@@ -94,6 +106,9 @@ def post_profile(request):
         school = data.get("school")
         major = data.get("major")
         hometown = data.get("hometown")
+
+        if not interest1 or not interest2 or not interest3 or not links or not school or not major or not hometown:
+            return JsonResponse({"error": "One or more fields are missing."}, status=400)
 
         profile, created = UserProfile.objects.update_or_create(
             user_profile=request.user,  # Filter by the current user
