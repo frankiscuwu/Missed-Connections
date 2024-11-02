@@ -47,7 +47,7 @@ def haversine(lat1, lon1, lat2, lon2):
 def get_proximate_users():
     # A DIFFERENCE OF 1km
     MAX_DISTANCE = 1 
-    user_lat = float(request.arg.sget('latitude'))
+    user_lat = float(request.arg.get('latitude'))
     user_lon = float(request.args.get('longitude'))
     # connecting with the database
     connection = sqlite3.connect("locations.db")
