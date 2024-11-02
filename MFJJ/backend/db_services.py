@@ -19,7 +19,7 @@ def init_db():
         connection.commit()
         connection.close()
 
-def add_location_item():
+def add_location_item(request):
     # getting the form items sent from client
     user_id = request.json.get('user_id')
     latitude = request.json.get('latitude')
@@ -44,9 +44,9 @@ def haversine(lat1, lon1, lat2, lon2):
     c = 2 * math.asin(math.sqrt(a))
     return R * c
 
-def get_proximate_users():
+def get_proximate_users(request):
     # A DIFFERENCE OF 1km
-    MAX_DISTANCE = 1 
+    MAX_DISTANCE = 0.1
     user_lat = float(request.arg.get('latitude'))
     user_lon = float(request.args.get('longitude'))
     # connecting with the database
