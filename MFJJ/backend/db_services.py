@@ -1,21 +1,29 @@
 import psycopg2
-import os
 import math
 
-def init_db():
-    # Replace these with your actual database credentials
-    connection = psycopg2.connect(
+
+def get_db_connection():
+    if 'db' not in g:
+        g.db = psycopg2.connect(
         dbname="railway",
         user="postgres",
         password="LVGZNTsafcfvPASxHgQZbRRMBaXVrKtM",
         host="postgres.railway.internal",  # for example, "db.example.com"
         port="5432"  # default PostgreSQL port is 5432
     )
+    return g.db
 
-    if not os.path.exists("locations.db"):
-        connection = sqlite3.connect("locations.db")
-        cursor = connection.cursor()
-        cursor.execute('''
+def close_db_connection(exception):
+    db = g.pop('db', None)
+    if db is not None:
+        db.close()
+    
+# 
+
+ def init_db():
+    connection = get_db_connection(g)
+    cursor = connection.cursor()
+    cursor.execute('''
                        
                         CREATE TABLE IF NOT EXISTS locations (
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -24,8 +32,8 @@ def init_db():
                         longitude REAL NOT NULL
                         )
                        ''')
-        connection.commit()
-        connection.close()
+    cursor.close()
+    connection.commit()
 
 def add_location_item(data):
     # getting the form items sent from client
@@ -35,14 +43,13 @@ def add_location_item(data):
 
 
     # connecting with the database
-    connection = sqlite3.connect("locations.db")
     cursor = connection.cursor()
     cursor.execute('''
                     INSERT INTO locations (user_id, latitude, longitude)
                     VALUES (?, ?, ?)
                     ''', (user_id, latitude, longitutde))
     connection.commit()
-    connection.close()
+    cursor.close()
 
 # Haversine formula to calculate distance between two latitude/longitude pairs
 def haversine(lat1, lon1, lat2, lon2):
@@ -59,12 +66,11 @@ def get_proximate_users(data):
     user_lat = float(data['lat'])
     user_long = float(data['long'])
     # connecting with the database
-    connection = sqlite3.connect("locations.db")
     cursor = connection.cursor()
     # grab all longitude and latitude locations for all users
     cursor.execute("SELECT user_id, latitude, longitude from LOCATIONS")
     locations = cursor.fetchall()
-    connection.close()
+    cursor.close()
 
     # calculate nearby users
     nearby_users = []
