@@ -21,7 +21,9 @@ def init_db():
 
 def add_location_item(data):
     # getting the form items sent from client
-    {user_id, latitude, longitutde} = data
+    user_id = data['user_id']
+    latitude = data['latitude']
+    longitutde = data['longitutde']
 
 
     # connecting with the database
@@ -43,11 +45,11 @@ def haversine(lat1, lon1, lat2, lon2):
     c = 2 * math.asin(math.sqrt(a))
     return R * c
 
-def get_proximate_users(request):
+def get_proximate_users(data):
     # A DIFFERENCE OF 1km
     MAX_DISTANCE = 0.1
-    user_lat = float(request.arg.get('latitude'))
-    user_lon = float(request.args.get('longitude'))
+    user_lat = float(data['latitude'])
+    user_long = float(data['longitutde'])
     # connecting with the database
     connection = sqlite3.connect("locations.db")
     cursor = connection.cursor()
@@ -59,7 +61,7 @@ def get_proximate_users(request):
     # calculate nearby users
     nearby_users = []
     for user_id, latitude, longitutde in locations: 
-        distance = haversine(user_lat, user_lon, latitude, longitutde)
+        distance = haversine(user_lat, user_long, latitude, longitutde)
         if distance <= MAX_DISTANCE:
             nearby_users.append(user_id)
     return nearby_users
