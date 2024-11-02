@@ -1,7 +1,7 @@
 import SwiftUI
 import CoreLocation
 
-struct ContentView: View {
+struct stupid: View {
     @StateObject private var locationManager = LocationManager()
     @State private var name: String = ""
     @State private var statusMessage: String = "Press the button to send your location"
@@ -67,14 +67,13 @@ struct ContentView: View {
 
     func locationToJSON(location: CLLocation) -> [String: Any] {
         return [
-            "user_id": name,
-            "lat": location.coordinate.latitude,
-            "long": location.coordinate.longitude
+            "latitude": location.coordinate.latitude,
+            "longitude": location.coordinate.longitude
         ]
     }
 
     func sendLocationData(locationData: [String: Any]) {
-        guard let url = URL(string: "http://10.239.101.11:5000/locate") else { return }
+        guard let url = URL(string: "http://10.239.101.11:5000/post_location/") else { return }
 
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
