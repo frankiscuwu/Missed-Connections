@@ -413,6 +413,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Streetpass/Info.plist;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Streetpass requires your location to function.";
 				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "Streetpass requires your location to function.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Streetpass requires your location to function.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -445,6 +446,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Streetpass/Info.plist;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Streetpass requires your location to function.";
 				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "Streetpass requires your location to function.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Streetpass requires your location to function.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;

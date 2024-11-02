@@ -6,16 +6,11 @@ struct stupid: View {
     @StateObject private var locationManager = LocationManager()
     @State private var statusMessage: String = "Press the button to send your location"
     
-    // State variables for showing the alert and response data
     @State private var showAlert: Bool = false
-    @State private var responseCode: Int? = nil // Store the response code
-    @State private var responseData: String = "" // Store the response data
-    @State private var timer: Timer? // Timer for automatic location sending
-
-    init() {
-        startBackgroundLocationUpdates()
-    }
-
+    @State private var responseCode: Int? = nil
+    @State private var responseData: String = ""
+    @State private var timer: Timer?
+    
     var body: some View {
         VStack(spacing: 20) {
             Text(statusMessage)
@@ -50,8 +45,14 @@ struct stupid: View {
                 dismissButton: .default(Text("OK"))
             )
         }
+        .onAppear {
+            // Set the closure to send location data when updated
+            locationManager.onLocationUpdate = { location in
+                sendLocation()
+            }
+        }
     }
-    
+
     func sendLocation() {
         if let location = locationManager.currentLocation {
             let locationData = locationToJSON(location: location)
@@ -92,18 +93,17 @@ struct stupid: View {
                     responseCode = nil
                     responseData = ""
                 } else if let httpResponse = response as? HTTPURLResponse {
-                    // Handle response data
                     if let data = data, let responseString = String(data: data, encoding: .utf8) {
                         print("Successfully sent location data! Response code: \(httpResponse.statusCode)")
                         statusMessage = "Location sent successfully!"
-                        responseCode = httpResponse.statusCode // Store the response code
-                        responseData = responseString // Store the response data as a string
+                        responseCode = httpResponse.statusCode
+                        responseData = responseString
                     } else {
                         responseCode = httpResponse.statusCode
                         responseData = "No data received."
                     }
                 }
-                showAlert = true // Show the alert
+                showAlert = true
             }
         }
 
@@ -111,40 +111,12 @@ struct stupid: View {
     }
 
     func startLocationTimer() {
-        // Invalidate the previous timer if it exists
         timer?.invalidate()
         
-        // Set up a new timer to send location every 3 seconds
-        timer = Timer.scheduledTimer(withTimeInterval: 3, repeats: true) { _ in
-            self.sendLocation() // Send the current location
+        timer = Timer.scheduledTimer(withTimeInterval: 20 * 60, repeats: true) { _ in
+            self.sendLocation()
         }
         
-        statusMessage = "Started sending location every 3 seconds."
-    }
-    
-
-    func startBackgroundLocationUpdates() {
-        print("please?")
-        // Schedule a local notification to trigger every 20 minutes
-        let content = UNMutableNotificationContent()
-        content.title = "Location Update"
-        content.body = "Sending your current location."
-        
-        // Create a trigger for every 20 minutes
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 60, repeats: true) // 1200 seconds = 20 minutes
-
-        // Create a request for the notification
-        let request = UNNotificationRequest(identifier: "LocationUpdate", content: content, trigger: trigger)
-
-        // Schedule the notification
-        UNUserNotificationCenter.current().add(request) { error in
-            if let error = error {
-                print("Error scheduling notification: \(error)")
-            }
-        }
-
-        // Call sendLocation initially when starting background updates
-        self.sendLocation()
+        statusMessage = "Started sending location every 20m."
     }
 }
-
