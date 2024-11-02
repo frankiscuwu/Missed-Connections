@@ -5,6 +5,7 @@ import json
 
 
 # Create your views here.
+@csrf_exempt
 def post_location(request):
     if request.method == "POST":
         data = json.loads(request.body) 
@@ -12,11 +13,11 @@ def post_location(request):
         latitude = data.get("latitude")
         longitude = data.get("longitude")
 
-        location = Location(user_id=user_id, latitude = latitude, longitutde=longitude)
+        location = Location(user_id=user_id, latitude = latitude, longitude=longitude)
         location.save()
         return JsonResponse({"message": "Location added succesfully!"}, status=201)
     return JsonResponse({"error": "Invalid request method"}, status=400)
 
 def get_users(request):
     if request.method == "GET":
-        
+        pass
