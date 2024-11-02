@@ -1,8 +1,6 @@
-import Foundation
 import CoreLocation
-import Combine
 
-class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObject {
+class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     private var locationManager: CLLocationManager
     @Published var currentLocation: CLLocation?
 
@@ -10,7 +8,7 @@ class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObject {
         locationManager = CLLocationManager()
         super.init()
         locationManager.delegate = self
-        locationManager.requestWhenInUseAuthorization()
+        locationManager.requestAlwaysAuthorization() // Request always authorization for background location updates
         locationManager.startUpdatingLocation()
     }
 
@@ -18,9 +16,9 @@ class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObject {
         guard let location = locations.last else { return }
         currentLocation = location
     }
-
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        print("Failed to find user's location: \(error.localizedDescription)")
-        currentLocation = nil
+    
+    func startBackgroundLocationUpdates() {
+        locationManager.allowsBackgroundLocationUpdates = true
+        locationManager.startUpdatingLocation()
     }
 }

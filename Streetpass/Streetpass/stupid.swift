@@ -1,5 +1,6 @@
 import SwiftUI
 import CoreLocation
+import UserNotifications
 
 struct stupid: View {
     @StateObject private var locationManager = LocationManager()
@@ -10,10 +11,13 @@ struct stupid: View {
     @State private var responseCode: Int? = nil // Store the response code
     @State private var responseData: String = "" // Store the response data
     @State private var timer: Timer? // Timer for automatic location sending
-    
+
+    init() {
+        startBackgroundLocationUpdates()
+    }
+
     var body: some View {
         VStack(spacing: 20) {
-            
             Text(statusMessage)
                 .padding()
                 .multilineTextAlignment(.center)
@@ -115,6 +119,32 @@ struct stupid: View {
             self.sendLocation() // Send the current location
         }
         
-        statusMessage = "Started sending location every 20 minutes."
+        statusMessage = "Started sending location every 3 seconds."
+    }
+    
+
+    func startBackgroundLocationUpdates() {
+        print("please?")
+        // Schedule a local notification to trigger every 20 minutes
+        let content = UNMutableNotificationContent()
+        content.title = "Location Update"
+        content.body = "Sending your current location."
+        
+        // Create a trigger for every 20 minutes
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 60, repeats: true) // 1200 seconds = 20 minutes
+
+        // Create a request for the notification
+        let request = UNNotificationRequest(identifier: "LocationUpdate", content: content, trigger: trigger)
+
+        // Schedule the notification
+        UNUserNotificationCenter.current().add(request) { error in
+            if let error = error {
+                print("Error scheduling notification: \(error)")
+            }
+        }
+
+        // Call sendLocation initially when starting background updates
+        self.sendLocation()
     }
 }
+
