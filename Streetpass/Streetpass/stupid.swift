@@ -3,7 +3,6 @@ import CoreLocation
 
 struct stupid: View {
     @StateObject private var locationManager = LocationManager()
-    @State private var name: String = ""
     @State private var statusMessage: String = "Press the button to send your location"
     
     // State variables for showing the alert and response data
@@ -14,12 +13,6 @@ struct stupid: View {
     
     var body: some View {
         VStack(spacing: 20) {
-            Text("Enter your name:")
-                .font(.headline)
-            
-            TextField("Name", text: $name)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding()
             
             Text(statusMessage)
                 .padding()
@@ -38,7 +31,7 @@ struct stupid: View {
             Button(action: {
                 startLocationTimer()
             }) {
-                Text("Start Sending Location Every 20 Minutes")
+                Text("Start Sending Location Every 3 seconds")
                     .foregroundColor(.white)
                     .padding()
                     .background(Color.green)
@@ -117,7 +110,7 @@ struct stupid: View {
         // Invalidate the previous timer if it exists
         timer?.invalidate()
         
-        // Set up a new timer to send location every 1200 seconds (20 minutes)
+        // Set up a new timer to send location every 3 seconds
         timer = Timer.scheduledTimer(withTimeInterval: 3, repeats: true) { _ in
             self.sendLocation() // Send the current location
         }

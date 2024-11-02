@@ -9,7 +9,7 @@
 - The user must be logged in
 
 ## /post_profile/
-- POST: Takes in "interest1", "interest2", "interest3", "links", "school", "major"
+- POST: Takes in "interest1", "interest2", "interest3", "links", "school", "major", "hometown"
 - Updates or creates a profile for a logged-in user
 - The user must be logged in
 

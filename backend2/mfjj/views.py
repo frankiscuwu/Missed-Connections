@@ -6,7 +6,7 @@ import json
 from django.utils import timezone
 from datetime import timedelta
 from .haversine import haversine
-from .models import Location
+from .models import Location, UserProfile
 # Create your views here.
 @csrf_exempt
 def post_location(request):
@@ -30,7 +30,7 @@ def get_users(request):
             return JsonResponse({"error": "Please login"}, status=401)
 
         # max distance is 0.1km
-        MAX_DISTANCE = 10000000
+        MAX_DISTANCE = 0.1
         # get the user
         user_id = request.user.id
 
@@ -61,12 +61,57 @@ def get_users(request):
                 if distance <= MAX_DISTANCE:
                     if location.user.username not in seen_usernames:
                         seen_usernames.add(location.user.username)
+                        nearby_userprofile = UserProfile.objects.get(user_profile=user_location.user)
+
                         nearby_users.append({
                             "username": location.user.username,
+                            "interest1": nearby_userprofile.interest1,
+                            "interest2": nearby_userprofile.interest2,
+                            "interest3": nearby_userprofile.interest3,
+                            "school": nearby_userprofile.school,
+                            "major": nearby_userprofile.major,
+                            "hometown": nearby_userprofile.hometowm
                         })
-
+                        
+            print(nearby_users)
         return JsonResponse(nearby_users, safe=False, status=200)
     return JsonResponse({"error": "Invalid request method."}, status=405)
+
+def post_profile(request):
+    if not request.user.is_authenticated:
+        return JsonResponse({"error": "Please login"}, status=401)
+
+    if request.method == "POST":
+        data = json.loads(request.body)
+        interest1 = data.get("interest1")
+        interest2 = data.get("interest2")
+        interest3 = data.get("interest3")
+        links = data.get("links")
+        school = data.get("school")
+        major = data.get("major")
+        hometown = data.get("hometown")
+
+        profile, created = UserProfile.objects.update_or_create(
+            user_profile=request.user,  # Filter by the current user
+            defaults={
+                'interest1': interest1,
+                'interest2': interest2,
+                'interest3': interest3,
+                'links': links,
+                'school': school,
+                'major': major,
+                'hometown': hometown
+            }
+        )
+        if created:
+            return JsonResponse({"message": "Profile created successfully!"}, status=201)
+        else:
+            return JsonResponse({"message": "Profile updated successfully!"}, status=200)
+
+    return JsonResponse({"error": "Invalid request method"}, status=400)
+
+
+
 
 ##### AUTH
 

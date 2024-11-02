@@ -18,6 +18,7 @@ class UserProfile(models.Model):
     links = models.TextField(blank=False)
     school = models.TextField(blank=False)
     major = models.TextField(blank=False)
+    hometown = models.TextField(blank=False)
     created_at = models.DateTimeField(auto_now_add=True)
     def save(self, *args, **kwargs):
         if self.interest1 and self.interest2 & self.interest3:
