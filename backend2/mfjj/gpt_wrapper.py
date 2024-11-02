@@ -12,7 +12,7 @@ def call_gpt(content):
                 "content": "Hello ChatGPT, the first person in this list is me. Then there is a list of other people and their profiles. Tell me which three of these people could good friends with me, based on our interests. Begin data: \n" + str(content),
             }
         ],
-        model="gpt-4-1106-preview",
+        model="gpt-4o-mini-2024-07-18",
     )
 
     return chat_completion
