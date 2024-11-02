@@ -28,7 +28,8 @@ def get_users(request):
     if request.method == "GET":
         if not request.user.is_authenticated:
             return JsonResponse({"error": "Please login"}, status=401)
-
+        if not UserProfile.objects.get(user_profile=request.user):
+            return JsonResponse({"error": "Please create a profile first"}, status=401)
         # max distance is 0.1km
         MAX_DISTANCE = 0.1
         # get the user
@@ -61,17 +62,20 @@ def get_users(request):
                 if distance <= MAX_DISTANCE:
                     if location.user.username not in seen_usernames:
                         seen_usernames.add(location.user.username)
-                        nearby_userprofile = UserProfile.objects.get(user_profile=user_location.user)
-
-                        nearby_users.append({
-                            "username": location.user.username,
-                            "interest1": nearby_userprofile.interest1,
-                            "interest2": nearby_userprofile.interest2,
-                            "interest3": nearby_userprofile.interest3,
-                            "school": nearby_userprofile.school,
-                            "major": nearby_userprofile.major,
-                            "hometown": nearby_userprofile.hometowm
-                        })
+                        try:
+                            nearby_userprofile = UserProfile.objects.get(user_profile=user_location.user)
+                            nearby_users.append({
+                                "username": location.user.username,
+                                "interest1": nearby_userprofile.interest1,
+                                "interest2": nearby_userprofile.interest2,
+                                "interest3": nearby_userprofile.interest3,
+                                "school": nearby_userprofile.school,
+                                "major": nearby_userprofile.major,
+                                "hometown": nearby_userprofile.hometowm
+                            })
+                        except UserProfile.DoesNotExist:
+                            # the user does not have a profile!
+                            continue
                         
             print(nearby_users)
         return JsonResponse(nearby_users, safe=False, status=200)
