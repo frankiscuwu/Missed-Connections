@@ -20,4 +20,6 @@ def post_location(request):
 
 def get_users(request):
     if request.method == "GET":
-        pass
+        locations = Location.objects.all().values()
+        print(locations)
+        
