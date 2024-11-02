@@ -24,10 +24,13 @@ def post_location(request):
 
 def get_users(request):
     if request.method == "GET":
+        if not request.user.is_authenticated:
+            return JsonResponse({"error": "Please login"}, status=401)
+
         # max distance is 0.1km
         MAX_DISTANCE = 0.1
         # get the user
-        user_id = request.GET.get('user_id')
+        user_id = request.user.id
         try:
             user_location = Location.objects.get(user_id=user_id)
         except Location.DoesNotExist:
