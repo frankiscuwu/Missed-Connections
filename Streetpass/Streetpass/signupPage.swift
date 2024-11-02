@@ -6,12 +6,13 @@ struct signupPage: View {
     @State private var showPassword = false
     @State private var showSuccessMessage = false  // State for showing success message
     @State private var navigateToLogin = false  // State for navigation
+    @State private var errorMessage = ""
     
     var body: some View {
         NavigationStack {
             VStack(spacing: 20) {
                 Text("Create an Account")
-                    .font(.largeTitle)
+                    .font(.title)
                     .fontWeight(.bold)
                     .padding(.top, 50)
 
@@ -92,6 +93,12 @@ struct signupPage: View {
                   message == "User created successfully!" else {
                 print("Error: Invalid response from server")
                 return
+            }
+            
+            if !errorMessage.isEmpty {
+                Text(errorMessage)
+                .foregroundColor(.red)
+                .padding(.horizontal, 40)
             }
             
             // Show success message

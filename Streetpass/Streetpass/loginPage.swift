@@ -10,12 +10,15 @@ import SwiftUI
 struct loginPage: View {
     @State private var username: String = ""
     @State private var password: String = ""
+    @State private var errorMessage = ""
 
     var body: some View {
         NavigationView {
             VStack {
-                Text("streetpass")
-                    .font(.largeTitle)
+                Image("templogo")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 150, height: 150) // Set the frame size as needed
                     .padding(.bottom, 40)
 
                 TextField("Username", text: $username)
@@ -42,7 +45,14 @@ struct loginPage: View {
                         .cornerRadius(5.0)
                 }
                 .padding(.bottom, 20)
-
+                
+                // Error Message
+                if !errorMessage.isEmpty {
+                    Text(errorMessage)
+                    .foregroundColor(.red)
+                    .padding(.horizontal, 40)
+                }
+                
                 NavigationLink(destination: signupPage()) {
                     Text("New user? Sign up")
                 }
