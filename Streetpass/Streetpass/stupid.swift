@@ -45,12 +45,6 @@ struct stupid: View {
                 dismissButton: .default(Text("OK"))
             )
         }
-        .onAppear {
-            // Set the closure to send location data when updated
-            locationManager.onLocationUpdate = { location in
-                sendLocation()
-            }
-        }
     }
 
     func sendLocation() {
