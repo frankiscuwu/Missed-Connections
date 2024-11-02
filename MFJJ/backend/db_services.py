@@ -46,7 +46,7 @@ def haversine(lat1, lon1, lat2, lon2):
     return R * c
 
 def get_proximate_users(data):
-    # A DIFFERENCE OF 1km
+    # A DIFFERENCE OF 0.1km
     MAX_DISTANCE = 0.1
     user_lat = float(data['latitude'])
     user_long = float(data['longitutde'])
@@ -63,5 +63,6 @@ def get_proximate_users(data):
     for user_id, latitude, longitutde in locations: 
         distance = haversine(user_lat, user_long, latitude, longitutde)
         if distance <= MAX_DISTANCE:
-            nearby_users.append(user_id)
+            # GET USER INTERESTS FROM DB
+            nearby_users.append({"username": user_id})
     return nearby_users
