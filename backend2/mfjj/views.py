@@ -57,15 +57,23 @@ def get_users(request):
 
             for location in locations:
                 distance = haversine(user_lat, user_long, location.latitude, location.longitude)
-                print("DISTANCE: ", distance)
                 # Get nearby users only
                 if distance <= MAX_DISTANCE:
                     if location.user.username not in seen_usernames:
                         seen_usernames.add(location.user.username)
+                        nearby_userprofile = UserProfile.objects.get(user_profile=user_location.user)
+
                         nearby_users.append({
                             "username": location.user.username,
+                            "interest1": nearby_userprofile.interest1,
+                            "interest2": nearby_userprofile.interest2,
+                            "interest3": nearby_userprofile.interest3,
+                            "school": nearby_userprofile.school,
+                            "major": nearby_userprofile.major,
+                            "hometown": nearby_userprofile.hometowm
                         })
-
+                        
+            print(nearby_users)
         return JsonResponse(nearby_users, safe=False, status=200)
     return JsonResponse({"error": "Invalid request method."}, status=405)
 
