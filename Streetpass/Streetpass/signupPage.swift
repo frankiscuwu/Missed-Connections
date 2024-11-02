@@ -6,7 +6,7 @@ struct signupPage: View {
     @State private var showPassword = false
     @State private var showSuccessMessage = false  // State for showing success message
     @State private var navigateToLogin = false  // State for navigation
-    @State private var errorMessage = ""
+    @State private var errorMessage: String? = nil // State for error message
     
     var body: some View {
         NavigationStack {
@@ -52,10 +52,18 @@ struct signupPage: View {
 
                 Spacer()
                 
+                
                 // Success message
                 if showSuccessMessage {
                     Text("Account created successfully!")
                         .foregroundColor(.green)
+                        .padding(.top, 20)
+                }
+                
+                // Error message
+                if let errorMessage = errorMessage {
+                    Text(errorMessage)
+                        .foregroundColor(.red)
                         .padding(.top, 20)
                 }
             }
@@ -95,11 +103,6 @@ struct signupPage: View {
                 return
             }
             
-            if !errorMessage.isEmpty {
-                Text(errorMessage)
-                .foregroundColor(.red)
-                .padding(.horizontal, 40)
-            }
             
             // Show success message
             DispatchQueue.main.async {
@@ -108,7 +111,11 @@ struct signupPage: View {
                     showSuccessMessage = false
                     navigateToLogin = true  // Trigger navigation to login page
                 }
+                
             }
+            
+            
+            
         }
         
         task.resume()
