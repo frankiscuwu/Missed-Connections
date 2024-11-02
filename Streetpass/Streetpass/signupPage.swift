@@ -59,7 +59,7 @@ struct signupPage: View {
                 }
             }
             .navigationDestination(isPresented: $navigateToLogin) {
-                LoginPage()
+                loginPage()
             }
         }
     }
@@ -105,13 +105,5 @@ struct signupPage: View {
         }
         
         task.resume()
-    }
-}
-
-struct LoginPage: View {
-    var body: some View {
-        Text("Welcome to the Login Page")
-            .font(.largeTitle)
-            .fontWeight(.bold)
     }
 }
