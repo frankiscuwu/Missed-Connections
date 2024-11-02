@@ -30,7 +30,7 @@ struct stupid: View {
             Button(action: {
                 startLocationTimer()
             }) {
-                Text("Start Sending Location Every 3 seconds")
+                Text("Start Sending Location Every 20 minutes")
                     .foregroundColor(.white)
                     .padding()
                     .background(Color.green)
@@ -113,7 +113,7 @@ struct stupid: View {
     func startLocationTimer() {
         timer?.invalidate()
         
-        timer = Timer.scheduledTimer(withTimeInterval: 20 * 60, repeats: true) { _ in
+        timer = Timer.scheduledTimer(withTimeInterval: 3, repeats: true) { _ in
             self.sendLocation()
         }
         
