@@ -1,9 +1,17 @@
-from flask import Flask, request, jsonify
-import sqlite3
+import psycopg2
 import os
 import math
 
 def init_db():
+    # Replace these with your actual database credentials
+    connection = psycopg2.connect(
+        dbname="railway",
+        user="postgres",
+        password="LVGZNTsafcfvPASxHgQZbRRMBaXVrKtM",
+        host="postgres.railway.internal",  # for example, "db.example.com"
+        port="5432"  # default PostgreSQL port is 5432
+    )
+
     if not os.path.exists("locations.db"):
         connection = sqlite3.connect("locations.db")
         cursor = connection.cursor()
