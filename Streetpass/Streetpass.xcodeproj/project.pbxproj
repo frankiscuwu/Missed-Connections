@@ -29,9 +29,22 @@
 		0140DF9B2CD67A5B00ECFCEE /* StreetpassUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StreetpassUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		0140DFB22CD6916700ECFCEE /* Exceptions for "Streetpass" folder in "Streetpass" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 0140DF802CD67A5900ECFCEE /* Streetpass */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		0140DF832CD67A5900ECFCEE /* Streetpass */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				0140DFB22CD6916700ECFCEE /* Exceptions for "Streetpass" folder in "Streetpass" target */,
+			);
 			path = Streetpass;
 			sourceTree = "<group>";
 		};
@@ -399,7 +412,9 @@
 				DEVELOPMENT_TEAM = HPTVWCF99A;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We need your location to send it to our database.";
+				INFOPLIST_FILE = Streetpass/Info.plist;
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "Streetpass requires your location to function.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Streetpass requires your location to function.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -429,7 +444,9 @@
 				DEVELOPMENT_TEAM = HPTVWCF99A;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We need your location to send it to our database.";
+				INFOPLIST_FILE = Streetpass/Info.plist;
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "Streetpass requires your location to function.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Streetpass requires your location to function.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

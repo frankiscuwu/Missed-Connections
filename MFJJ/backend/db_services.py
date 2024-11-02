@@ -1,4 +1,3 @@
-import flask import Flask, g
 import psycopg2
 import math
 
@@ -19,8 +18,10 @@ def close_db_connection(exception):
     if db is not None:
         db.close()
     
+# 
+
  def init_db():
-    connection = get_db_connection()
+    connection = get_db_connection(g)
     cursor = connection.cursor()
     cursor.execute('''
                        
