@@ -9,9 +9,11 @@ struct loginPage: View {
     var body: some View {
         NavigationStack {
             VStack {
-                Text("streetpass")
-                    .font(.largeTitle)
-                    .padding(.bottom, 40)
+                Image("templogo")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 150, height: 150)
+                    .padding(.top, 50)
 
                 TextField("Username", text: $username)
                     .padding()
