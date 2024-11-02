@@ -95,6 +95,9 @@ def post_profile(request):
         major = data.get("major")
         hometown = data.get("hometown")
 
+        if not interest1 or not interest2 or not interest3 or not links or not school or not major or not hometown:
+            return JsonResponse({"error": "One or more fields are missing."}, status=400)
+
         profile, created = UserProfile.objects.update_or_create(
             user_profile=request.user,  # Filter by the current user
             defaults={
