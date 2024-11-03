@@ -6,7 +6,7 @@
 //
 import SwiftUI
 
-struct matchesPage: View {
+struct stalkerAddedPage: View {
     var body: some View {
         VStack {
             Text("Matches Page")

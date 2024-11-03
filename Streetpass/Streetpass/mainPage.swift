@@ -27,19 +27,19 @@ struct mainPage: View {
                     .frame(width: 250, height: 250)
                     .padding(.top, 50)
                 
-                // Profile Link
-                NavigationLink(destination: profilePage()) {
-                    Text("Edit Profile")
+                // Missed Connections Button
+                NavigationLink(destination: missedConnectionsPage()) {
+                    Text("Missed Connections")
                         .frame(maxWidth: .infinity, minHeight: 50)
-                        .background(Color.blue)
+                        .background(Color.orange)
                         .foregroundColor(.white)
                         .cornerRadius(10)
                         .padding(.horizontal)
                 }
                 
                 // Generate Matches Button
-                NavigationLink(destination: matchesPage()) {
-                    Text("Generate Matches")
+                NavigationLink(destination: stalkerAddedPage()) {
+                    Text("Added Users")
                         .frame(maxWidth: .infinity, minHeight: 50)
                         .background(Color.green)
                         .foregroundColor(.white)
@@ -47,11 +47,11 @@ struct mainPage: View {
                         .padding(.horizontal)
                 }
                 
-                // Missed Connections Button
-                NavigationLink(destination: missedConnectionsPage()) {
-                    Text("Missed Connections")
+                // Profile Link
+                NavigationLink(destination: profilePage()) {
+                    Text("Edit Profile")
                         .frame(maxWidth: .infinity, minHeight: 50)
-                        .background(Color.orange)
+                        .background(Color.blue)
                         .foregroundColor(.white)
                         .cornerRadius(10)
                         .padding(.horizontal)
@@ -153,4 +153,9 @@ struct mainPage: View {
         
         statusMessage = "Started sending location every 20m."
     }
+}
+
+
+#Preview {
+    mainPage()
 }
