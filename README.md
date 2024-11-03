@@ -3,6 +3,8 @@
 ![Swift](https://img.shields.io/badge/swift-F54A2A?style=for-the-badge&logo=swift&logoColor=white)
 ![ChatGPT](https://img.shields.io/badge/chatGPT-74aa9c?style=for-the-badge&logo=openai&logoColor=white)
 ![Railway](https://img.shields.io/badge/Railway-131415?style=for-the-badge&logo=railway&logoColor=white)
+![PostgresSQL](https://img.shields.io/badge/PostgresSQL-131415?style=for-the-badge&logo=railway&logoColor=white)
+
 
 <img src="Streetpass/Streetpass/Assets.xcassets/rainbow1.imageset/Orange%20Minimalist%20Travel%20App%20Business%20Logo%20(1).png" alt="Logo" width="300">
 
