@@ -28,7 +28,7 @@ struct mainPage: View {
                     .padding(.top, 50)
                 
                 // Missed Connections Button
-                NavigationLink(destination: missedConnectionsPage()) {
+                NavigationLink(destination: MissedConnectionsPage()) {
                     Text("Missed Connections")
                         .frame(maxWidth: .infinity, minHeight: 50)
                         .background(Color.orange)
