@@ -9,10 +9,10 @@ struct loginPage: View {
     var body: some View {
         NavigationStack {
             VStack {
-                Image("templogo")
+                Image("rainbow1")
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 150, height: 150)
+                    .frame(width: 250, height: 250)
                     .padding(.top, 50)
 
                 TextField("Username", text: $username)
