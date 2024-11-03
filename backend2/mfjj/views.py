@@ -185,6 +185,42 @@ def post_friends(request):
     return JsonResponse({"error": "Invalid request method"}, status=400)
 
 
+@csrf_exempt
+def get_friends(request):
+    if not request.user.is_authenticated:
+        return JsonResponse({"error": "Please login"}, status=401)
+
+    if request.method == "GET":
+        # Get all friends of the logged-in user
+        friends = Friendship.objects.filter(user=request.user).select_related('friend')
+
+        # Collect friends' profile information
+        friend_list = []
+        for friendship in friends:
+            friend = friendship.friend
+            try:
+                profile = UserProfile.objects.get(user_profile=friend)
+                friend_info = {
+                    "username": friend.username,
+                    "interest1": profile.interest1,
+                    "interest2": profile.interest2,
+                    "interest3": profile.interest3,
+                    "links": profile.links,
+                    "school": profile.school,
+                    "major": profile.major,
+                    "hometown": profile.hometown
+                }
+            except UserProfile.DoesNotExist:
+                # If profile doesn't exist, just return username without profile data
+                friend_info = {"username": friend.username}
+
+            friend_list.append(friend_info)
+
+        return JsonResponse({"friends": friend_list}, status=200)
+
+    return JsonResponse({"error": "Invalid request method"}, status=400)
+
+
 ##### AUTH
 @csrf_exempt
 def signup(request):

@@ -8,6 +8,11 @@
 - GET: Gives the suggested people for a logged-in user
 - The user must be logged in
 
+## /get_friends/
+- GET: Gives list of your friends and their profile info
+- The user must be logged in
+
+
 ## /post_friends/
 - POST: Takes a "friend_username"
 - Makes you guys friends
