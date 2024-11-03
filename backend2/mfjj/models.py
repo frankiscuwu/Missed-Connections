@@ -28,3 +28,11 @@ class UserProfile(models.Model):
         super().save(*args, **kwargs)
         def __str__(self):
             return f"{self.user_profile.username}'s Profile"
+
+class Friendship(models.Model):
+    user = models.ForeignKey(User, related_name="friend", on_delete=models.CASCADE)
+    friend = models.ForeignKey(User, related_name="friendee", on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    class Meta:
+        unique_together = ('user', 'friend')
+
