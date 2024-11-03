@@ -100,7 +100,7 @@ def get_users(request):
                 continue
 
             # Fetch the user profile info
-            nearby_user_profile = UserProfile.objects.filter(user__username=recommendation["person"]).first()
+            nearby_user_profile = UserProfile.objects.filter(user_profile=User.objects.get(username=recommendation["person"])).first()
 
             # Create the new recommendation entry
             enriched_recommendation = {
