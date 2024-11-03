@@ -25,12 +25,12 @@
 - **Railway**, for hosting our PostgreSQL DB
 
 <h1> Screenshots: 📸 </h1>
-<img src="media/Create_Account" alt="Create_Account" width="200"/>
-<img src="media/Login" alt="Login" width="200"/>
-<img src="media/Overview" alt="Overview" width="200">
-<img src="media/Edit_Profile" alt="Edit Profile" width="200"/>
-<img src="media/Misconnection" alt="Misconnection" width="200"/>
-<img src="media/User_Profiles" alt="User Profiles" width="200"/>
+<img src="/media/Create_Account" alt="Create_Account" width="200"/>
+<img src="/media/Login" alt="Login" width="200"/>
+<img src="/media/Overview" alt="Overview" width="200">
+<img src="/media/Edit_Profile" alt="Edit Profile" width="200"/>
+<img src="/media/Misconnection" alt="Misconnection" width="200"/>
+<img src="/media/User_Profiles" alt="User Profiles" width="200"/>
 
 
 
