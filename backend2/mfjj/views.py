@@ -83,7 +83,9 @@ def get_users(request):
                                 "interest3": nearby_userprofile.interest3,
                                 "school": nearby_userprofile.school,
                                 "major": nearby_userprofile.major,
-                                "hometown": nearby_userprofile.hometown
+                                "hometown": nearby_userprofile.hometown,
+                                "lat": location.latitude,
+                                "long": location.longitude
                             })
                         except UserProfile.DoesNotExist:
                             # the user does not have a profile!
@@ -109,6 +111,8 @@ def get_users(request):
                 "school": nearby_user_profile.school if nearby_user_profile else None,
                 "major": nearby_user_profile.major if nearby_user_profile else None,
                 "hometown": nearby_user_profile.hometown if nearby_user_profile else None,
+                "lat": recommendation["lat"],
+                "long": recommendation["long"]
             }
 
 
