@@ -90,6 +90,10 @@ def get_users(request):
                             continue
                         
         gpt_response = call_gpt(nearby_users, current_userprofile.user_profile.username)
+        gpt_response["recommendations"] = [
+        recommendation for recommendation in gpt_response["recommendations"]
+        if recommendation["person"] != current_userprofile.user_profile.username
+    ]
 
         if gpt_response == 404:
             return JsonResponse({"error": "Try again."}, status=500)
