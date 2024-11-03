@@ -14,7 +14,7 @@
 
 
 ## /post_friends/
-- POST: Takes a "friend_username"
+- POST: Takes a "username"
 - Makes you guys friends
 - The user must be logged in
 
