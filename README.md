@@ -10,6 +10,8 @@
 
 # Missed Connections 💫
 
+## Award: Won Automatic Admission into Spark! Technology Innovation Fellowship Course
+
 *Missed Connections* is a unique **full-stack** iOS social app inspired by the nostalgia of Nintendo StreetPass. Designed to enhance your everyday encounters, it tracks your location throughout the day, tracking when you encounter like-minded individuals. At the end of each day, our algorithm matches you with people you passed who share your interests, allowing you to discover potential friendships and connections that you may have missed in real life.
 
 https://devpost.com/software/missed-connections-f6y3sc
