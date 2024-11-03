@@ -24,6 +24,7 @@ struct profilePage: View {
     @State private var schoolError: String?
     @State private var majorError: String?
     @State private var hometownError: String?
+    @State private var shortened: String = ""
     
     let apiEndpoint = "http://10.239.101.11:5000/post_profile/" // URL
     
@@ -31,24 +32,28 @@ struct profilePage: View {
         NavigationView {
             Form {
                 Section(header: Text("Interests")) {
-                    TextField("Interest 1", text: $interest1)
-                    TextField("Interest 2", text: $interest2)
-                    TextField("Interest 3", text: $interest3)
+                    TextField("interest 1", text: $interest1)
+                    TextField("interest 2", text: $interest2)
+                    TextField("interest 3", text: $interest3)
                     if let error = interestError {
                         Text(error).foregroundColor(.red)
                     }
                 }
                 
-                Section(header: Text("Links")) {
-                    TextField("Links (e.g., Instagram, LinkedIn, GitHub)", text: $links)
+                Section(header: Text("Instagram username")) {
+                    TextField("e.g., frank_yang", text: $shortened)
+                        .onChange(of: shortened) { newValue in
+                            links = "https://www.instagram.com/\(newValue)/"
+                            validateInputs()
+                        }
                     if let error = linksError {
                         Text(error).foregroundColor(.red)
                     }
                 }
                 
                 Section(header: Text("Education")) {
-                    TextField("School", text: $school)
-                    TextField("Major", text: $major)
+                    TextField("school", text: $school)
+                    TextField("major", text: $major)
                     if let error = schoolError {
                         Text(error).foregroundColor(.red)
                     }
@@ -58,7 +63,7 @@ struct profilePage: View {
                 }
                 
                 Section(header: Text("Personal Info")) {
-                    TextField("Hometown", text: $hometown)
+                    TextField("hometown", text: $hometown)
                     if let error = hometownError {
                         Text(error).foregroundColor(.red)
                     }
@@ -70,6 +75,7 @@ struct profilePage: View {
                             .frame(maxWidth: .infinity, alignment: .center)
                     }
                     .buttonStyle(.borderedProminent)
+                    .tint(.pink)
                     .disabled(!isValidProfile())
                 }
             }
@@ -80,7 +86,7 @@ struct profilePage: View {
     
     func validateInputs() {
         interestError = interest1.isEmpty || interest2.isEmpty || interest3.isEmpty ? "Please provide all interests." : nil
-        linksError = !isValidURL(links) ? "Please provide a valid URL." : nil
+        linksError = !isValidURL(links) ? "Please provide a valid Instagram URL." : nil
         schoolError = school.isEmpty ? "Please provide your school name." : nil
         majorError = major.isEmpty ? "Please provide your major." : nil
         hometownError = hometown.isEmpty ? "Please provide your hometown." : nil
@@ -110,7 +116,7 @@ struct profilePage: View {
         )
         
         guard let url = URL(string: apiEndpoint) else {
-            print("Invalid URL")
+            print("Invalid URL. Be specific")
             return
         }
         
@@ -181,5 +187,9 @@ struct profilePage: View {
         guard let url = URL(string: urlString) else { return false }
         return UIApplication.shared.canOpenURL(url)
     }
+}
+
+#Preview {
+    profilePage()
 }
 
