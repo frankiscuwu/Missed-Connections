@@ -90,8 +90,12 @@ def get_users(request):
                             continue
                         
         gpt_response = call_gpt(nearby_users)
-        print(gpt_response)
-        return JsonResponse(nearby_users, safe=False, status=200)
+
+        if gpt_response == 404:
+            return JsonResponse({"error": "Try again."}, status=500)
+        else:
+            return JsonResponse(gpt_response, status=200)
+
     return JsonResponse({"error": "Invalid request method."}, status=405)
 
 @csrf_exempt
