@@ -8,20 +8,20 @@ import SwiftUI
 import MapKit
 import Foundation
 
-import SwiftUI
-import MapKit
-import Foundation
-
 struct MissedConnectionsPage: View {
     @State private var region = MKCoordinateRegion(
         center: CLLocationCoordinate2D(latitude: 28.5384, longitude: -81.3789), // Default coordinates
-        span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
+        span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
     )
     
-    @State private var messages: [String] = []
+    @State private var messages: [String] = [
+        "You missed a connection with Alice, a(n) Computer Science major from Stanford today.\n\nBecause you were both at the same event.",
+        "You missed a connection with Bob, a(n) Mechanical Engineering from MIT today.\n\nHe is looking for someone to collaborate on a project."
+    ]
     @State private var missedConnectionLocations: [(latitude: Double, longitude: Double)] = []
     @State private var errorMessage: String?
     @State private var currentIndex: Int = 0 // Keep track of the current message index
+    @State private var username: [String] = []
     
     var body: some View {
         VStack(spacing: 20) {
@@ -42,6 +42,7 @@ struct MissedConnectionsPage: View {
                     } else {
                         ForEach(messages.indices, id: \.self) { index in
                             Text(messages[index])
+                                .padding()
                                 .frame(width: geometry.size.width - 40, height: 200)
                                 .background(Color.gray.opacity(0.2))
                                 .cornerRadius(10)
@@ -55,9 +56,13 @@ struct MissedConnectionsPage: View {
                 .frame(height: 220)
                 .onChange(of: currentIndex) { newIndex in
                     updateMapRegion(for: newIndex) // Update the map region with the new index
+                    // Update the username based on the current index
+                    if newIndex < username.count {
+                        let currentPerson = username[newIndex]
+                        print("Current person for friend request: \(currentPerson)")
+                    }
                 }
             }
-
             .padding(.horizontal, 20)
             
             HStack(spacing: 20) {
@@ -73,7 +78,15 @@ struct MissedConnectionsPage: View {
                 }
                 
                 Button(action: {
-                    print("Friend Request button tapped")
+                    // Check if the current index is valid
+                    if currentIndex < username.count {
+                        // Get the current person's username based on the current index
+                        let currentPerson = username[currentIndex]
+                        print("Sending friend request to: \(currentPerson)") // Debug statement
+                        sendFriendRequest(for: currentPerson)
+                    } else {
+                        print("Error: Current index \(currentIndex) is out of bounds for usernames array with count \(username.count).") // Debug statement
+                    }
                 }) {
                     Text("Friend Request")
                         .frame(maxWidth: .infinity)
@@ -82,6 +95,7 @@ struct MissedConnectionsPage: View {
                         .foregroundColor(.white)
                         .cornerRadius(10)
                 }
+
             }
             .padding(.horizontal, 20)
             .padding(.bottom, 20)
@@ -91,18 +105,14 @@ struct MissedConnectionsPage: View {
         .navigationTitle("Missed Connections")
         .onAppear { fetchMessages() }
     }
-    
+
     func updateMapRegion(for index: Int) {
         guard index < missedConnectionLocations.count else { return } // Ensure the index is valid
         
         let selectedLocation = missedConnectionLocations[index]
         region.center = CLLocationCoordinate2D(latitude: selectedLocation.latitude, longitude: selectedLocation.longitude)
     }
-
-
-
-
-
+    
     func unpackAIcall(completion: @escaping (Result<[String: Any], Error>) -> Void) {
         guard let url = URL(string: "http://10.239.101.11:5000/get_users/") else { return }
         
@@ -159,9 +169,10 @@ struct MissedConnectionsPage: View {
                         continue
                     }
 
-                    let message = "You missed a connection with \(person), a(n) \(major) from \(school), earlier at \(longitude), \(latitude).\n\(reason)"
+                    let message = "You missed a connection with \(person), a(n) \(major) major from \(school) today.\n\(reason)"
                     messages.append(message)
                     locations.append((latitude, longitude)) // Add to locations array
+                    username.append(person)
                 }
                 
                 // Update the missed connection locations state variable
@@ -174,7 +185,6 @@ struct MissedConnectionsPage: View {
             }
         }
     }
-
     
     func fetchMessages() {
         fetchMissedConnectionMessages { result in
@@ -190,6 +200,42 @@ struct MissedConnectionsPage: View {
                 }
             }
         }
+    }
+    
+    func sendFriendRequest(for person: String) {
+        // URL for sending the friend request
+        guard let url = URL(string: "http://10.239.101.11:5000/post_friends/") else { return }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        // Create JSON object with the person's name
+        let json: [String: Any] = ["username": person]
+        
+        // Convert the JSON object to Data
+        do {
+            let jsonData = try JSONSerialization.data(withJSONObject: json, options: [])
+            request.httpBody = jsonData
+        } catch {
+            print("Error creating JSON data: \(error.localizedDescription)")
+            return
+        }
+        
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                print("Error sending friend request: \(error.localizedDescription)")
+                return
+            }
+            
+            // Handle response if needed
+            if let data = data {
+                // Optionally parse the response here if needed
+                print("Friend request response: \(String(data: data, encoding: .utf8) ?? "")")
+            }
+        }
+        
+        task.resume()
     }
 }
 

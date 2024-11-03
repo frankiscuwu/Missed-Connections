@@ -88,7 +88,7 @@ struct loginPage: View {
                 
                 // If login is successful, set a delay before navigating
                 if message == "Login successful!" {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
                         navigateToMain = true
                     }
                 }
