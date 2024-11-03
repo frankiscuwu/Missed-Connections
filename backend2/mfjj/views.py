@@ -29,7 +29,7 @@ def get_users(request):
     if request.method == "GET":
         if not request.user.is_authenticated:
             return JsonResponse({"error": "Please login"}, status=401)
-        if not UserProfile.objects.get(user_profile=request.user):
+        if not UserProfile.objects.filter(user_profile=request.user).exists():
             return JsonResponse({"error": "Please create a profile first"}, status=401)
         # max distance is 0.1km
         MAX_DISTANCE = 0.1
