@@ -90,7 +90,7 @@ def get_users(request):
                             continue
 
         # enrich the GPT response with more information                
-        gpt_response = call_gpt(nearby_users, current_userprofile.user_profile.username)
+        gpt_response = call_gpt(nearby_users)
         # Assuming gpt_response already has the recommendations
         filtered_recommendations = []
 
