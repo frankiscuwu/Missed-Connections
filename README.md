@@ -1,6 +1,8 @@
 ![Django](https://img.shields.io/badge/django-%23092E20.svg?style=for-the-badge&logo=django&logoColor=white)
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 ![Swift](https://img.shields.io/badge/swift-F54A2A?style=for-the-badge&logo=swift&logoColor=white)
+![ChatGPT](https://img.shields.io/badge/chatGPT-74aa9c?style=for-the-badge&logo=openai&logoColor=white)
+![Railway](https://img.shields.io/badge/Railway-131415?style=for-the-badge&logo=railway&logoColor=white)
 
 <img src="Streetpass/Streetpass/Assets.xcassets/rainbow1.imageset/Orange%20Minimalist%20Travel%20App%20Business%20Logo%20(1).png" alt="Logo" width="300">
 
@@ -20,6 +22,7 @@
 - **Swift**, for front-end development on iOS
 - **Django** and **Python**, which manages API calls and matches people with our algorithm powered by **OpenAI**
 - **PostgreSQL**, for storing and efficiently querying user data
+- **Railway**, for hosting our PostgreSQL DB
 
 <h1>API Reference: 📖</h1>
 
