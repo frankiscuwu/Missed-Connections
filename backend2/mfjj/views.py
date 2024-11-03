@@ -6,7 +6,7 @@ import json
 from django.utils import timezone
 from datetime import timedelta
 from .haversine import haversine
-from .models import Location, UserProfile
+from .models import Location, UserProfile, Friendship
 from .gpt_wrapper import call_gpt
 # Create your views here.
 @csrf_exempt
@@ -162,7 +162,23 @@ def post_profile(request):
 
     return JsonResponse({"error": "Invalid request method"}, status=400)
 
+def post_friends(request):
+    if not request.user.is_authenticated:
+        return JsonResponse({"error": "Please login"}, status=401)
 
+    if request.method == "POST":
+        data = json.loads(request.body)
+        friend_username = data.get("friend_username")
+
+        try:
+            friend = User.objects.get(username=friend_username)
+        except User.DoesNotExist:
+            return JsonResponse({"error": "User does not exist"}, status=404)
+
+        Friendship.objects.get_or_create(user=request.user, friend=friend)
+
+        return JsonResponse({"message": "Friend added succesfully!"}, status=201)
+    return JsonResponse({"error": "Invalid request method"}, status=400)
 
 
 ##### AUTH
