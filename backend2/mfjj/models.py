@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-# Create your models here.
+# Location model that allows for location saves for a given user
 class Location(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="location")
     latitude = models.FloatField()
@@ -10,6 +10,7 @@ class Location(models.Model):
     def __start__(self):
         return f"{self.user}: ({self.latitude}, {self.longitude})"
 
+# UserProfile method with a list of interests, social media links, school, major, and other connection worthy info
 class UserProfile(models.Model):
     user_profile = models.OneToOneField(User, on_delete=models.CASCADE)
     interest1 = models.TextField(blank=False)
@@ -29,6 +30,7 @@ class UserProfile(models.Model):
         def __str__(self):
             return f"{self.user_profile.username}'s Profile"
 
+# a friendship paradigm where users can mark each other as friends
 class Friendship(models.Model):
     user = models.ForeignKey(User, related_name="friend", on_delete=models.CASCADE)
     friend = models.ForeignKey(User, related_name="friendee", on_delete=models.CASCADE)

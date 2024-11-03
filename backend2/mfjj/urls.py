@@ -1,6 +1,8 @@
 from django.urls import path
 from . import views
 
+
+# urls endpoints for the API 
 urlpatterns = [
     path("post_friends/", views.post_friends, name="post_friends"),
     path("post_location/", views.post_location, name="post_location"),
