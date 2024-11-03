@@ -7,6 +7,8 @@ def call_gpt(content):
     load_dotenv()
     client = OpenAI(api_key=os.getenv("CHAT_KEY"))
 
+    print(content)
+
     prompt = '''You will be given a list of people. The first person in the list is me, don't include me as a match. Find three other people in the list that most share similar interests to me. Be optimistic. Format each person recomendation in a JSON format. This an an example of an output: ' ,   
                 "Example: {
         "recommendations": [
@@ -32,6 +34,7 @@ def call_gpt(content):
 
 
     generated_string = chat_completion.choices[0].message.content.strip()
+    print(generated_string)
     try:
         json_data = json.loads(generated_string)
         return json_data
