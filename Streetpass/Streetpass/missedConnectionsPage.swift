@@ -8,17 +8,21 @@ import SwiftUI
 import MapKit
 import Foundation
 
+import SwiftUI
+import MapKit
+import Foundation
+
 struct MissedConnectionsPage: View {
     @State private var region = MKCoordinateRegion(
-        center: CLLocationCoordinate2D(latitude: 37.7749, longitude: -122.4194), // Example coordinates
+        center: CLLocationCoordinate2D(latitude: 28.5384, longitude: -81.3789), // Default coordinates
         span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
     )
-    @State private var messages: [String] = [
-        "You missed a connection with Alice, a(n) Computer Science major from Stanford, earlier at -122.4184, 37.7749.\n\nBecause you were both at the same event.",
-        "You missed a connection with Bob, a(n) Mechanical Engineering from MIT, earlier at -122.4194, 37.7750.\n\nHe is looking for someone to collaborate on a project."
-    ]
+    
+    @State private var messages: [String] = []
+    @State private var missedConnectionLocations: [(latitude: Double, longitude: Double)] = []
     @State private var errorMessage: String?
-
+    @State private var currentIndex: Int = 0 // Keep track of the current message index
+    
     var body: some View {
         VStack(spacing: 20) {
             Map(coordinateRegion: $region)
@@ -27,29 +31,34 @@ struct MissedConnectionsPage: View {
                 .padding()
             
             GeometryReader { geometry in
-                TabView {
+                TabView(selection: $currentIndex) {
                     if messages.isEmpty {
-                        Text("Loading missed connections...")
+                        Text("Loading Missed Connections...")
                             .font(.title)
                             .frame(width: geometry.size.width - 40, height: 200)
                             .background(Color.gray.opacity(0.2))
                             .cornerRadius(10)
                             .padding(.horizontal, 20)
                     } else {
-                        ForEach(messages.prefix(3), id: \.self) { message in
-                            Text(message)
-                                .frame(width: geometry.size.width - 40, height: 200) // Full width minus padding
+                        ForEach(messages.indices, id: \.self) { index in
+                            Text(messages[index])
+                                .frame(width: geometry.size.width - 40, height: 200)
                                 .background(Color.gray.opacity(0.2))
                                 .cornerRadius(10)
-                                .padding(.horizontal, 20) // Adds padding on left and right
+                                .padding(.horizontal, 20)
                                 .font(.system(size: 20))
+                                .tag(index) // Tag each message with its index
                         }
                     }
                 }
                 .tabViewStyle(.page(indexDisplayMode: .always))
-                .frame(height: 220) // Adjust height if needed
+                .frame(height: 220)
+                .onChange(of: currentIndex) { newIndex in
+                    updateMapRegion(for: newIndex) // Update the map region with the new index
+                }
             }
-            .padding(.horizontal, 20) // Margin for TabView itself
+
+            .padding(.horizontal, 20)
             
             HStack(spacing: 20) {
                 Button(action: {
@@ -80,9 +89,20 @@ struct MissedConnectionsPage: View {
             Spacer()
         }
         .navigationTitle("Missed Connections")
-        .onAppear { fetchMessages() } // Call fetchMessages when the view appears
+        .onAppear { fetchMessages() }
     }
     
+    func updateMapRegion(for index: Int) {
+        guard index < missedConnectionLocations.count else { return } // Ensure the index is valid
+        
+        let selectedLocation = missedConnectionLocations[index]
+        region.center = CLLocationCoordinate2D(latitude: selectedLocation.latitude, longitude: selectedLocation.longitude)
+    }
+
+
+
+
+
     func unpackAIcall(completion: @escaping (Result<[String: Any], Error>) -> Void) {
         guard let url = URL(string: "http://10.239.101.11:5000/get_users/") else { return }
         
@@ -125,7 +145,8 @@ struct MissedConnectionsPage: View {
                 }
                 
                 var messages: [String] = []
-                
+                var locations: [(Double, Double)] = [] // Store the locations
+
                 for recommendation in recommendations {
                     guard
                         let person = recommendation["person"] as? String,
@@ -137,10 +158,14 @@ struct MissedConnectionsPage: View {
                     else {
                         continue
                     }
-                    
+
                     let message = "You missed a connection with \(person), a(n) \(major) from \(school), earlier at \(longitude), \(latitude).\n\(reason)"
                     messages.append(message)
+                    locations.append((latitude, longitude)) // Add to locations array
                 }
+                
+                // Update the missed connection locations state variable
+                self.missedConnectionLocations = locations
                 
                 completion(.success(messages))
                 
@@ -149,6 +174,7 @@ struct MissedConnectionsPage: View {
             }
         }
     }
+
     
     func fetchMessages() {
         fetchMissedConnectionMessages { result in
@@ -156,6 +182,9 @@ struct MissedConnectionsPage: View {
                 switch result {
                 case .success(let newMessages):
                     self.messages.append(contentsOf: newMessages)
+                    if let firstIndex = self.missedConnectionLocations.indices.first {
+                        updateMapRegion(for: firstIndex) // Update the map region to the first message's location
+                    }
                 case .failure(let error):
                     self.errorMessage = "Failed to load message: \(error.localizedDescription)"
                 }
@@ -163,6 +192,7 @@ struct MissedConnectionsPage: View {
         }
     }
 }
+
 #Preview {
     MissedConnectionsPage()
 }
