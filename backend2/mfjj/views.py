@@ -172,7 +172,7 @@ def post_friends(request):
 
     if request.method == "POST":
         data = json.loads(request.body)
-        friend_username = data.get("friend_username")
+        friend_username = data.get("username")
 
         try:
             friend = User.objects.get(username=friend_username)
