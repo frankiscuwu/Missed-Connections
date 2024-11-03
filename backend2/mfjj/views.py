@@ -88,13 +88,36 @@ def get_users(request):
                         except UserProfile.DoesNotExist:
                             # the user does not have a profile!
                             continue
-                        
-        gpt_response = call_gpt(nearby_users, current_userprofile.user_profile.username)
-        gpt_response["recommendations"] = [
-        recommendation for recommendation in gpt_response["recommendations"]
-        if recommendation["person"] != current_userprofile.user_profile.username
-    ]
 
+        # enrich the GPT response with more information                
+        gpt_response = call_gpt(nearby_users, current_userprofile.user_profile.username)
+        # Assuming gpt_response already has the recommendations
+        filtered_recommendations = []
+
+        for recommendation in gpt_response["recommendations"]:
+            # Skip the current user
+            if recommendation["person"] == current_userprofile.user_profile.username:
+                continue
+
+            # Fetch the user profile info
+            nearby_user_profile = UserProfile.objects.filter(user__username=recommendation["person"]).first()
+
+            # Create the new recommendation entry
+            enriched_recommendation = {
+                "person": recommendation["person"],
+                "reason": recommendation["reason"],
+                "school": nearby_user_profile.school if nearby_user_profile else None,
+                "major": nearby_user_profile.major if nearby_user_profile else None,
+                "hometown": nearby_user_profile.hometown if nearby_user_profile else None,
+            }
+
+
+        # Add to the filtered list
+        filtered_recommendations.append(enriched_recommendation)
+
+        # Update the recommendations in the original response
+        gpt_response["recommendations"] = filtered_recommendations
+        
         if gpt_response == 404:
             return JsonResponse({"error": "Try again."}, status=500)
         else:
@@ -143,7 +166,6 @@ def post_profile(request):
 
 
 ##### AUTH
-
 @csrf_exempt
 def signup(request):
     if request.method == "POST":
