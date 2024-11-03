@@ -75,7 +75,7 @@ def get_users(request):
                     if location.user.username not in seen_usernames:
                         seen_usernames.add(location.user.username)
                         try:
-                            nearby_userprofile = UserProfile.objects.get(user_profile=user_location.user)
+                            nearby_userprofile = UserProfile.objects.get(user_profile=location.user)
                             nearby_users.append({
                                 "username": location.user.username,
                                 "interest1": nearby_userprofile.interest1,
