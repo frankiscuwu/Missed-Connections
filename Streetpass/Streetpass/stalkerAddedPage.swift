@@ -8,7 +8,8 @@ import SwiftUI
 
 // Define the stalkerAddedPage struct
 struct oneUserProfile: Codable, Identifiable {
-    let id = UUID()  // Generates a unique identifier for each instance
+    let id = UUID()  // Unique id created
+    var username: String
     var interest1: String
     var interest2: String
     var interest3: String
@@ -18,21 +19,21 @@ struct oneUserProfile: Codable, Identifiable {
     var hometown: String
 }
 
-// Main view to display profile information
 struct stalkerAddedPage: View {
     @State private var profiles: [oneUserProfile] = []
-    let apiEndpoint = "http://10.239.101.11:5000/get_friends/" // Replace with your actual endpoint
+    //let apiEndpoint = "http://10.239.101.11:5000/get_friends/" // api endpoint
     
     var body: some View {
         NavigationView {
             List(profiles) { profile in
                 VStack(alignment: .leading) {
-                    Text("School: \(profile.school)").font(.headline)
+                    Text("Username: \(profile.username)").font(.headline)
+                    Text("School: \(profile.school)").font(.subheadline)
                     Text("Major: \(profile.major)").font(.subheadline)
                     Text("Hometown: \(profile.hometown)").font(.subheadline)
                     Text("Interests: \(profile.interest1), \(profile.interest2), \(profile.interest3)")
                     if let link = URL(string: profile.links) {
-                        Link("View Social Profile", destination: link)
+                        Link("View Social Profile", destination: link) // hopefully instagram link
                     }
                 }
                 .padding()
@@ -43,7 +44,7 @@ struct stalkerAddedPage: View {
     }
     
     func loadProfiles() {
-        guard let url = URL(string: apiEndpoint) else {
+        guard let url = /*URL*/Bundle.main.url(/*string:*/ forResource: "fakeProfiles", withExtension: "json"/*apiEndpoint*/) else {
             print("Invalid URL")
             return
         }

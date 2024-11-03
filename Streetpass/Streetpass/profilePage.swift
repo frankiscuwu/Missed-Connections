@@ -19,41 +19,46 @@ struct profilePage: View {
     @State private var major: String = ""
     @State private var hometown: String = ""
     @State private var shortened: String = ""
+    @State private var saveMessage: String? // Optional variable for success message
     
-    let apiEndpoint = "http://10.239.101.11:5000/post_profile/" // URL
+    let apiEndpoint = "http://10.239.101.11:5000/post_profile/" // JSON backend URL
     
     var body: some View {
         NavigationView {
             Form {
-                Section(header: Text("Interests")) {
+                Section(header: Text("Interests")) { // Three interests
                     TextField("interest 1", text: $interest1)
                     TextField("interest 2", text: $interest2)
                     TextField("interest 3", text: $interest3)
                 }
                 
-                Section(header: Text("Instagram username")) {
-                    TextField("e.g., frank._yang", text: $shortened)
+                Section(header: Text("Instagram username")) { // Instagram username
+                    TextField("e.g., frank_yang", text: $shortened)
                         .onChange(of: shortened) { newValue in
                             links = "https://www.instagram.com/\(newValue)/"
                         }
                 }
                 
-                Section(header: Text("Education")) {
+                Section(header: Text("Education")) { // Education
                     TextField("school", text: $school)
                     TextField("major", text: $major)
                 }
                 
-                Section(header: Text("Personal Info")) {
+                Section(header: Text("Personal Info")) { // Hometown
                     TextField("hometown", text: $hometown)
                 }
                 
                 Section {
-                    Button(action: saveProfile) {
+                    Button(action: saveProfile) { // Save profile button
                         Text("Save Profile")
                             .frame(maxWidth: .infinity, alignment: .center)
                     }
                     .buttonStyle(.borderedProminent)
-                    .tint(.pink)
+                    .tint(.blue)
+                }
+                
+                if let message = saveMessage { // If successful, print success message
+                    Text(message).foregroundColor(.green).padding()
                 }
             }
             .navigationTitle("Edit Profile")
@@ -77,7 +82,7 @@ struct profilePage: View {
             return
         }
         
-        do {
+        do { // loads in user profile if already exists
             let jsonData = try JSONEncoder().encode(profile)
             var request = URLRequest(url: url)
             request.httpMethod = "POST" // or "PUT" depending on your API
@@ -91,7 +96,9 @@ struct profilePage: View {
                 }
                 
                 if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
-                    print("Profile successfully saved.")
+                    DispatchQueue.main.async {
+                        self.saveMessage = "Profile successfully saved."
+                    }
                 } else {
                     print("Failed to save profile: Server error.")
                 }
