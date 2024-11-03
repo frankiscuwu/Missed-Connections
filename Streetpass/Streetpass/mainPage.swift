@@ -155,7 +155,3 @@ struct mainPage: View {
     }
 }
 
-
-#Preview {
-    mainPage()
-}
