@@ -21,7 +21,7 @@ struct mainPage: View {
     var body: some View {
         NavigationView {
             VStack(spacing: 20) {
-                Image("rainbow1")
+                Image("boring")
                     .resizable()
                     .scaledToFit()
                     .frame(width: 250, height: 250)
