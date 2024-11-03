@@ -13,7 +13,10 @@ struct MissedConnectionsPage: View {
         center: CLLocationCoordinate2D(latitude: 37.7749, longitude: -122.4194), // Example coordinates
         span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
     )
-    @State private var messages: [String] = []
+    @State private var messages: [String] = [
+        "You missed a connection with Alice, a(n) Computer Science major from Stanford, earlier at -122.4184, 37.7749.\n\nBecause you were both at the same event.",
+        "You missed a connection with Bob, a(n) Mechanical Engineering from MIT, earlier at -122.4194, 37.7750.\n\nHe is looking for someone to collaborate on a project."
+    ]
     @State private var errorMessage: String?
 
     var body: some View {
@@ -35,11 +38,11 @@ struct MissedConnectionsPage: View {
                     } else {
                         ForEach(messages.prefix(3), id: \.self) { message in
                             Text(message)
-                                .font(.title)
                                 .frame(width: geometry.size.width - 40, height: 200) // Full width minus padding
                                 .background(Color.gray.opacity(0.2))
                                 .cornerRadius(10)
                                 .padding(.horizontal, 20) // Adds padding on left and right
+                                .font(.system(size: 20))
                         }
                     }
                 }
