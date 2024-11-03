@@ -11,13 +11,10 @@ import Foundation
 struct MissedConnectionsPage: View {
     @State private var region = MKCoordinateRegion(
         center: CLLocationCoordinate2D(latitude: 28.5384, longitude: -81.3789), // Default coordinates
-        span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+        span: MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.001)
     )
     
-    @State private var messages: [String] = [
-        "You missed a connection with Alice, a(n) Computer Science major from Stanford today.\n\nBecause you were both at the same event.",
-        "You missed a connection with Bob, a(n) Mechanical Engineering from MIT today.\n\nHe is looking for someone to collaborate on a project."
-    ]
+    @State private var messages: [String] = [    ]
     @State private var missedConnectionLocations: [(latitude: Double, longitude: Double)] = []
     @State private var errorMessage: String?
     @State private var currentIndex: Int = 0 // Keep track of the current message index
@@ -33,7 +30,7 @@ struct MissedConnectionsPage: View {
             GeometryReader { geometry in
                 TabView(selection: $currentIndex) {
                     if messages.isEmpty {
-                        Text("Loading Missed Connections...")
+                        Text("Loading missed connections...")
                             .font(.title)
                             .frame(width: geometry.size.width - 40, height: 200)
                             .background(Color.gray.opacity(0.2))
@@ -47,7 +44,7 @@ struct MissedConnectionsPage: View {
                                 .background(Color.gray.opacity(0.2))
                                 .cornerRadius(10)
                                 .padding(.horizontal, 20)
-                                .font(.system(size: 20))
+                                .font(.system(size: 16))
                                 .tag(index) // Tag each message with its index
                         }
                     }
@@ -169,7 +166,7 @@ struct MissedConnectionsPage: View {
                         continue
                     }
 
-                    let message = "You missed a connection with \(person), a(n) \(major) major from \(school) today.\n\(reason)"
+                    let message = "You missed a connection with \(person), a(n) \(major) major from \(school) .\n\(reason)"
                     messages.append(message)
                     locations.append((latitude, longitude)) // Add to locations array
                     username.append(person)
