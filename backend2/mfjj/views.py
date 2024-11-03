@@ -90,7 +90,7 @@ def get_users(request):
                             continue
 
         # enrich the GPT response with more information                
-        gpt_response = call_gpt(nearby_users)
+        gpt_response = call_gpt(nearby_users, current_userprofile.user_profile.username)
         # Assuming gpt_response already has the recommendations
         filtered_recommendations = []
 
@@ -100,7 +100,7 @@ def get_users(request):
                 continue
 
             # Fetch the user profile info
-            nearby_user_profile = UserProfile.objects.filter(user_profile=User.objects.get(username=recommendation["person"])).first()
+            nearby_user_profile = UserProfile.objects.filter(nearby_user_profile=User.obrecommendation["person"]).first()
 
             # Create the new recommendation entry
             enriched_recommendation = {
@@ -112,8 +112,8 @@ def get_users(request):
             }
 
 
-        # Add to the filtered list
-        filtered_recommendations.append(enriched_recommendation)
+            # Add to the filtered list
+            filtered_recommendations.append(enriched_recommendation)
 
         # Update the recommendations in the original response
         gpt_response["recommendations"] = filtered_recommendations
@@ -161,7 +161,7 @@ def post_profile(request):
             return JsonResponse({"message": "Profile updated successfully!"}, status=200)
 
     return JsonResponse({"error": "Invalid request method"}, status=400)
-@csrf_exempt
+
 def post_friends(request):
     if not request.user.is_authenticated:
         return JsonResponse({"error": "Please login"}, status=401)
