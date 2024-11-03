@@ -100,7 +100,7 @@ def get_users(request):
                 continue
 
             # Fetch the user profile info
-            nearby_user_profile = UserProfile.objects.filter(nearby_user_profile=User.obrecommendation["person"]).first()
+            nearby_user_profile = UserProfile.objects.filter(nearby_user_profile=User.objects.get(username = recommendation["person"])).first()
 
             # Create the new recommendation entry
             enriched_recommendation = {
@@ -161,7 +161,7 @@ def post_profile(request):
             return JsonResponse({"message": "Profile updated successfully!"}, status=200)
 
     return JsonResponse({"error": "Invalid request method"}, status=400)
-
+@csrf_exempt
 def post_friends(request):
     if not request.user.is_authenticated:
         return JsonResponse({"error": "Please login"}, status=401)
