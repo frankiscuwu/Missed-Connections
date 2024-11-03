@@ -89,7 +89,7 @@ def get_users(request):
                             # the user does not have a profile!
                             continue
                         
-        gpt_response = call_gpt(nearby_users)
+        gpt_response = call_gpt(nearby_users, current_userprofile.user_profile.username)
 
         if gpt_response == 404:
             return JsonResponse({"error": "Try again."}, status=500)

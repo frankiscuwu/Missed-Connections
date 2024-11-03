@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 import os
 import json
 
-def call_gpt(content):
+def call_gpt(content, username):
     load_dotenv()
     client = OpenAI(api_key=os.getenv("CHAT_KEY"))
 
@@ -23,10 +23,13 @@ def call_gpt(content):
 
 
     generated_string = chat_completion.choices[0].message.content.strip()
-    print(generated_string)
     try:
         json_data = json.loads(generated_string)
-        return json_data
+        json_data["recommendations"] = [
+        recommendation for recommendation in json_data["recommendations"]
+        if recommendation["person"] != username
+        ]
+        return json.dumps(json_data, indent=4)
     except json.JSONDecodeError as e:
         return 404
 
