@@ -4,7 +4,7 @@ struct loginPage: View {
     @State private var username: String = ""
     @State private var password: String = ""
     @State private var loginMessage: String = ""
-    @State private var navigateToStupid = false  // State variable for navigation
+    @State private var navigateToMain = false
 
     var body: some View {
         NavigationStack {
@@ -47,8 +47,8 @@ struct loginPage: View {
                 }
             }
             .padding()
-            .navigationDestination(isPresented: $navigateToStupid) {
-                stupid()
+            .navigationDestination(isPresented: $navigateToMain) {
+                mainPage()
             }
         }
     }
@@ -88,8 +88,8 @@ struct loginPage: View {
                 
                 // If login is successful, set a delay before navigating
                 if message == "Login successful!" {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                        navigateToStupid = true
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                        navigateToMain = true
                     }
                 }
             }

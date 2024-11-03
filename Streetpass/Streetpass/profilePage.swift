@@ -183,8 +183,3 @@ struct profilePage: View {
     }
 }
 
-struct ProfileView_Previews: PreviewProvider {
-    static var previews: some View {
-        profilePage()
-    }
-}
