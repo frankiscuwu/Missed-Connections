@@ -20,36 +20,37 @@ struct profilePage: View {
     @State private var hometown: String = ""
     @State private var shortened: String = ""
     @State private var saveMessage: String? // Optional variable for success message
-    
+    @State private var showAlert: Bool = false // State for alert
+
     let apiEndpoint = "http://10.239.101.11:5000/post_profile/" // JSON backend URL
     
     var body: some View {
         NavigationView {
             Form {
-                Section(header: Text("Interests")) { // Three interests
-                    TextField("interest 1", text: $interest1)
-                    TextField("interest 2", text: $interest2)
-                    TextField("interest 3", text: $interest3)
+                Section(header: Text("Interests")) {
+                    TextField("Interest 1", text: $interest1)
+                    TextField("Interest 2", text: $interest2)
+                    TextField("Interest 3", text: $interest3)
                 }
                 
-                Section(header: Text("Instagram username")) { // Instagram username
-                    TextField("e.g., frank_yang", text: $shortened)
+                Section(header: Text("Instagram username")) {
+                    TextField("e.g., frank._yang", text: $shortened)
                         .onChange(of: shortened) { newValue in
                             links = "https://www.instagram.com/\(newValue)/"
                         }
                 }
                 
-                Section(header: Text("Education")) { // Education
-                    TextField("school", text: $school)
-                    TextField("major", text: $major)
+                Section(header: Text("Education")) {
+                    TextField("School", text: $school)
+                    TextField("Major", text: $major)
                 }
                 
-                Section(header: Text("Personal Info")) { // Hometown
-                    TextField("hometown", text: $hometown)
+                Section(header: Text("Personal Info")) {
+                    TextField("Hometown", text: $hometown)
                 }
                 
                 Section {
-                    Button(action: saveProfile) { // Save profile button
+                    Button(action: saveProfile) {
                         Text("Save Profile")
                             .frame(maxWidth: .infinity, alignment: .center)
                     }
@@ -57,12 +58,17 @@ struct profilePage: View {
                     .tint(.blue)
                 }
                 
-                if let message = saveMessage { // If successful, print success message
+                if let message = saveMessage {
                     Text(message).foregroundColor(.green).padding()
                 }
             }
             .navigationTitle("Edit Profile")
             .onAppear(perform: loadProfile)
+            .alert("Profile Saved", isPresented: $showAlert) {
+                Button("OK", role: .cancel) { }
+            } message: {
+                Text("Your profile has been successfully saved.")
+            }
         }
     }
     
@@ -78,14 +84,14 @@ struct profilePage: View {
         )
         
         guard let url = URL(string: apiEndpoint) else {
-            print("Invalid URL. Be specific")
+            print("Invalid URL.")
             return
         }
         
-        do { // loads in user profile if already exists
+        do {
             let jsonData = try JSONEncoder().encode(profile)
             var request = URLRequest(url: url)
-            request.httpMethod = "POST" // or "PUT" depending on your API
+            request.httpMethod = "POST"
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
             request.httpBody = jsonData
             
@@ -98,6 +104,7 @@ struct profilePage: View {
                 if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
                     DispatchQueue.main.async {
                         self.saveMessage = "Profile successfully saved."
+                        self.showAlert = true // Show alert on successful save
                     }
                 } else {
                     print("Failed to save profile: Server error.")

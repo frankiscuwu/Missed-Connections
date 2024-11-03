@@ -1,12 +1,6 @@
-//
-//  matchesPage.swift
-//  Streetpass
-//
-//  Created by Jodi Yu on 11/2/24.
-//
 import SwiftUI
 
-// Define the stalkerAddedPage struct
+// Define the oneUserProfile struct
 struct oneUserProfile: Codable, Identifiable {
     let id = UUID()  // Unique id created
     var username: String
@@ -19,21 +13,31 @@ struct oneUserProfile: Codable, Identifiable {
     var hometown: String
 }
 
+// Define a struct to decode the friends array
+struct FriendsResponse: Codable {
+    let friends: [oneUserProfile]
+}
+
 struct stalkerAddedPage: View {
     @State private var profiles: [oneUserProfile] = []
-    //let apiEndpoint = "http://10.239.101.11:5000/get_friends/" // api endpoint
+    let apiEndpoint = "http://10.239.101.11:5000/get_friends/" // Uncomment this when ready to use the API
     
     var body: some View {
         NavigationView {
             List(profiles) { profile in
                 VStack(alignment: .leading) {
-                    Text("Username: \(profile.username)").font(.headline)
-                    Text("School: \(profile.school)").font(.subheadline)
-                    Text("Major: \(profile.major)").font(.subheadline)
-                    Text("Hometown: \(profile.hometown)").font(.subheadline)
+                    Text("\(profile.username)")
+                        .font(.title)
+                    Text("School: \(profile.school)")
+                        .font(.subheadline)
+                    Text("Major: \(profile.major)")
+                        .font(.subheadline)
+                    Text("Hometown: \(profile.hometown)")
+                        .font(.subheadline)
                     Text("Interests: \(profile.interest1), \(profile.interest2), \(profile.interest3)")
+                        .font(.subheadline)
                     if let link = URL(string: profile.links) {
-                        Link("View Social Profile", destination: link) // hopefully instagram link
+                        Link("View Instagram Profile", destination: link) // Open social profile link
                     }
                 }
                 .padding()
@@ -44,10 +48,10 @@ struct stalkerAddedPage: View {
     }
     
     func loadProfiles() {
-        guard let url = /*URL*/Bundle.main.url(/*string:*/ forResource: "fakeProfiles", withExtension: "json"/*apiEndpoint*/) else {
+        guard let url = URL(string: apiEndpoint) else {
             print("Invalid URL")
             return
-        }
+         }
         
         URLSession.shared.dataTask(with: url) { data, response, error in
             if let error = error {
@@ -61,9 +65,9 @@ struct stalkerAddedPage: View {
             }
             
             do {
-                let decodedProfiles = try JSONDecoder().decode([oneUserProfile].self, from: data)
+                let decodedResponse = try JSONDecoder().decode(FriendsResponse.self, from: data)
                 DispatchQueue.main.async {
-                    self.profiles = decodedProfiles
+                    self.profiles = decodedResponse.friends // Update the profiles state variable
                 }
             } catch {
                 print("Failed to decode profiles: \(error.localizedDescription)")
@@ -71,11 +75,3 @@ struct stalkerAddedPage: View {
         }.resume()
     }
 }
-
-// Preview setup for SwiftUI
-struct ProfilePage_Previews: PreviewProvider {
-    static var previews: some View {
-        stalkerAddedPage()
-    }
-}
-
