@@ -14,10 +14,16 @@ def call_gpt(content):
         "recommendations": [
             {"person": "frank",
              "reason": "Frank has an interest in teaching, which aligns with shared educational values."},
+             "latitude": <lat number we gave you>,
+             "longitude": <lat number we gave you>
             {"person": "jodi",
              "reason": "Jodi's interest in dance and skating shows a creative spirit that could resonate with various artistic interests."},
+             "latitude": <lat number we gave you>,
+             "longitude": <lat number we gave you>
             {"person": "jodii",
-             "reason": "Though Jodii's interests differ, sharing the same school implies potential common ground in social or academic activities."}
+             "reason": "Though Jodii's interests differ, sharing the same school implies potential common ground in social or academic activities."
+             "latitude": <lat number we gave you>,
+             "longitude": <lat number we gave you>}
         ]
     }. In your JSON, dont put ```json, just put {. Similarly, don't use ``` to end, just put a curly bracket ( } ). Also, don't use single quotes, its json you need to use "". The JSON should be wrapped in curly brackets. DO NOT INCLUDE ME (THE FIRST USER) IN THE JSON RESPONSE EVER, I AM NOT A MATCH FOR MYSELF. For example, my name is the first name in the list. Don't include this as a reccomendation. PLEASE!!! Data begins here: '''
 
