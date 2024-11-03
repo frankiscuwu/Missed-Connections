@@ -8,20 +8,20 @@
 
 # Missed Connections 💫
 
-*Missed Connections* is a unique social app inspired by the nostalgia of Nintendo StreetPass. Designed to enhance your everyday encounters, it tracks your location throughout the day, tracking where you encounter like-minded individuals. At the end of each day, our algorithm matches you with those you passed who share your interests, allowing you to discover potential friendships and connections that you may have missed in real life.
+*Missed Connections* is a unique **full-stack** iOS ocial app inspired by the nostalgia of Nintendo StreetPass. Designed to enhance your everyday encounters, it tracks your location throughout the day, tracking where you encounter like-minded individuals. At the end of each day, our algorithm matches you with those you passed who share your interests, allowing you to discover potential friendships and connections that you may have missed in real life.
 
 ## Features ✨
-- Geo-tracking
-- AI-powered matching
-- more?
+- Geo-tracking: Using Apple's *CoreLocation* framework, we log a user's location throughout the day. 
+- AI-powered matching: The matching system is done by *ChatGPT* which ranks the similarity between our client and people the client has ran into. If they share high similarites, we notify the respective users that they shared a *misconnection*.
+- Full User Authentication: Leveraging Django's built-in authentication library, we allow users to signup, create a profile, login, and logout of the app
 
 ## How it Works 🛠️
-- Using Swift, we get your location periodically throughout the day. These calls are made to our Django backend server, which stores user information
+- Using Swift, we get your location periodically throughout the day. These calls are made to our Django backend server, which stores your user information. The server then finds all other users that were aproximately close to you. Then we utilize ChatGPT to test the similarity of interests and background between you and the people you were close to. At the end of the day, you can find three people you walked by and share very similar interest. We share this information to the frontend Swift server. You can then further connect with these people by adding them as friends on the app. 
 
 ## Tech Stack 🤓
-- **Swift**, for front-end development on iOS
+- **Swift**, for front-end development on iOS and majorly used Apple's *Foundation* framework, *CoreLocation* framework, and *MapKit*
 - **Django** and **Python**, which manages API calls and matches people with our algorithm powered by **OpenAI**
-- **PostgreSQL**, for storing and efficiently querying user data
+- **PostgreSQL**, for storing and efficiently querying location, friendship, and user data
 - **Railway**, for hosting our PostgreSQL DB
 
 <h1>API Reference: 📖</h1>
